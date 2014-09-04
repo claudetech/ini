@@ -63,5 +63,27 @@ var _ = Describe("lexer", func() {
 				Expect(token.(*otherToken).value).To(Equal(e))
 			}
 		})
+
+		It("should work with normal string", func() {
+			lex := newLexer(strings.NewReader("foo = bar ; test\r\n"))
+			for _, e := range []string{"f", "o", "o"} {
+				Expect(getToken(lex).(*otherToken).value).To(Equal(e))
+			}
+			Expect(func() { _ = getToken(lex).(*spaceToken) }).NotTo(Panic())
+			Expect(func() { _ = getToken(lex).(*sepToken) }).NotTo(Panic())
+			Expect(func() { _ = getToken(lex).(*spaceToken) }).NotTo(Panic())
+			for _, e := range []string{"b", "a", "r"} {
+				Expect(getToken(lex).(*otherToken).value).To(Equal(e))
+			}
+			Expect(func() { _ = getToken(lex).(*spaceToken) }).NotTo(Panic())
+			Expect(func() { _ = getToken(lex).(*commentToken) }).NotTo(Panic())
+			Expect(func() { _ = getToken(lex).(*spaceToken) }).NotTo(Panic())
+			for _, e := range []string{"t", "e", "s", "t"} {
+				Expect(getToken(lex).(*otherToken).value).To(Equal(e))
+			}
+			Expect(func() { _ = getToken(lex).(*newLineToken) }).NotTo(Panic())
+			_, err := lex.nextToken()
+			Expect(err).NotTo(BeNil())
+		})
 	})
 })

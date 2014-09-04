@@ -7,21 +7,21 @@ import (
 )
 
 type lexer struct {
-	reader       *bufio.Reader
+	rd           *bufio.Reader
 	sepChars     []byte
 	commentChars []byte
 }
 
-func newLexer(reader io.Reader) *lexer {
-	return newLexerWithOptions(bufio.NewReader(reader), []byte{'='}, []byte{';'})
+func newLexer(rd io.Reader) *lexer {
+	return newLexerWithOptions(bufio.NewReader(rd), []byte{'='}, []byte{';'})
 }
 
-func newLexerWithOptions(reader io.Reader, sepChars []byte, commentChars []byte) *lexer {
-	return &lexer{bufio.NewReader(reader), sepChars, commentChars}
+func newLexerWithOptions(rd io.Reader, sepChars []byte, commentChars []byte) *lexer {
+	return &lexer{bufio.NewReader(rd), sepChars, commentChars}
 }
 
 func (l *lexer) peekNext() (byte, error) {
-	bytes, err := l.reader.Peek(1)
+	bytes, err := l.rd.Peek(1)
 	if err != nil {
 		return '0', nil
 	}
@@ -29,7 +29,7 @@ func (l *lexer) peekNext() (byte, error) {
 }
 
 func (l *lexer) nextToken() (token, error) {
-	nextByte, err := l.reader.ReadByte()
+	nextByte, err := l.rd.ReadByte()
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (l *lexer) nextToken() (token, error) {
 	case nextByte == '\n' || nextByte == '\r':
 		if nextByte == '\r' {
 			if n, err := l.peekNext(); err == nil && n == '\n' {
-				_, _ = l.reader.ReadByte()
+				_, _ = l.rd.ReadByte()
 			}
 		}
 		return &newLineToken{}, nil
