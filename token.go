@@ -11,7 +11,7 @@ const (
 	otherTokType
 )
 
-func (t tokenType) ToString() string {
+func (t tokenType) String() string {
 	switch t {
 	case newLineTokType:
 		return "newline"
@@ -72,4 +72,17 @@ type otherToken struct {
 
 func (t *otherToken) getType() tokenType {
 	return otherTokType
+}
+
+func stringValue(tok token) string {
+	switch t := tok.(type) {
+	case *spaceToken:
+		return t.value
+	case *symbolToken:
+		return t.symbol
+	case *otherToken:
+		return t.value
+	default:
+		return ""
+	}
 }
