@@ -59,7 +59,7 @@ func (t *commentToken) getType() tokenType {
 }
 
 type symbolToken struct {
-	value string
+	symbol string
 }
 
 func (t *symbolToken) getType() tokenType {

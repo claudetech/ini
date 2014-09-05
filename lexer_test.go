@@ -37,7 +37,7 @@ var _ = Describe("lexer", func() {
 			expected := []string{"[", "]", "\""}
 			for _, e := range expected {
 				token := getToken(lex)
-				Expect(token.(*symbolToken).value).To(Equal(e))
+				Expect(token.(*symbolToken).symbol).To(Equal(e))
 			}
 		})
 
