@@ -3,6 +3,7 @@ package ini
 import (
 	"github.com/mitchellh/mapstructure"
 	"io"
+	"os"
 )
 
 type Decoder struct {
@@ -59,4 +60,13 @@ func (d *Decoder) Decode(r interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func DecodeFile(path string, v interface{}) error {
+	file, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	return NewDecoder(file).Decode(v)
 }
