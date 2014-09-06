@@ -55,7 +55,7 @@ func (d *Decoder) Decode(r interface{}) error {
 	if err := pars.parseConfig(); err != nil {
 		return err
 	}
-	if err := mapstructure.Decode(r, pars.currentConfig); err != nil {
+	if err := mapstructure.WeakDecode(pars.currentConfig, r); err != nil {
 		return err
 	}
 	return nil

@@ -107,18 +107,20 @@ func (p *parser) advance() token {
 }
 
 func (p *parser) parseIdentifier() (ident string, err error) {
-	token := p.currentToken
 	var buffer bytes.Buffer
 
-	for t, ok := token.(*otherToken); ok; t, ok = token.(*otherToken) {
-		v := t.value
+	shouldStop := func(tokType tokenType) bool {
+		return tokType == commentTokType || tokType == symbolTokType || tokType == sepTokType
+	}
+
+	for token := p.currentToken; token != nil && !shouldStop(token.getType()); token = p.advance() {
+		v := stringValue(token)
 		if p.lowCaseIds {
 			v = strings.ToLower(v)
 		}
 		buffer.WriteString(v)
-		token = p.advance()
 	}
-	ident = buffer.String()
+	ident = strings.TrimRight(buffer.String(), " \t")
 
 	if !p.idRegexp.MatchString(ident) {
 		msg := fmt.Sprintf("Bad section name: %s. Should match %s.",
@@ -151,7 +153,7 @@ func (p *parser) parseValue() (value string, err error) {
 		buffer.WriteString(stringValue(token))
 		token = p.advance()
 	}
-	value = buffer.String()
+	value = strings.TrimRight(buffer.String(), " \t")
 	return
 }
 
@@ -174,7 +176,6 @@ func (p *parser) parseAssignment() (ident string, value string, err error) {
 	if err != nil {
 		return
 	}
-	value = strings.TrimRight(value, " \t")
 	return
 }
 
