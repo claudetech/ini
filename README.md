@@ -4,6 +4,10 @@ This module is a ini file parser for Golang.
 It tries to have an API as close as possible to the
 standard library.
 
+Full documentation is available at
+
+https://godoc.org/github.com/claudetech/ini
+
 ## Usage
 
 Here is a sample usage, using the wrapper to read files.
