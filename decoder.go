@@ -20,7 +20,7 @@ type Options struct {
 	LowCaseIds   bool
 }
 
-var defaultOptions Options = Options{
+var DefaultOptions Options = Options{
 	IdRegexp:     idDefaultRegex,
 	SepChars:     []byte{'='},
 	CommentChars: []byte{';'},
@@ -28,7 +28,7 @@ var defaultOptions Options = Options{
 }
 
 func NewDecoder(rd io.Reader) *Decoder {
-	return &Decoder{rd, defaultOptions}
+	return &Decoder{rd, DefaultOptions}
 }
 
 func NewDecoderWithOptions(rd io.Reader, opts Options) *Decoder {
