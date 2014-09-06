@@ -24,7 +24,7 @@ var _ = Describe("Decoder", func() {
 		`
 		It("should decode to map", func() {
 			d := NewDecoder(strings.NewReader(config))
-			var c map[string]map[string]string
+			var c Config
 			err := d.Decode(&c)
 			Expect(err).To(BeNil())
 			_, ok := c["section"]
@@ -44,7 +44,7 @@ var _ = Describe("Decoder", func() {
 		})
 
 		It("should parse simple files", func() {
-			var c map[string]map[string]string
+			var c Config
 			err := DecodeFile("./test_data/simple.ini", &c)
 			Expect(err).To(BeNil())
 			_, ok := c["section"]
@@ -59,8 +59,8 @@ var _ = Describe("Decoder", func() {
 			defer file.Close()
 			Expect(err).To(BeNil())
 			d := NewDecoder(file)
-			d.IdRegexp("[a-z][a-z0-9_ ]+")
-			var conf map[string]map[string]string
+			d.IdRegexp("^[a-z][a-z0-9_\\. -]+$")
+			var conf Config
 			err = d.Decode(&conf)
 			Expect(err).To(BeNil())
 			php, ok := conf["php"]

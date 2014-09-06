@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+type Config config
+
 type Decoder struct {
 	rd      io.Reader
 	options Options

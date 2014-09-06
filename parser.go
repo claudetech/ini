@@ -11,7 +11,7 @@ import (
 type config map[string]map[string]string
 
 const (
-	idDefaultRegex = "[a-z][a-z0-9_]+"
+	idDefaultRegex = "^[a-z][a-z0-9_]+$"
 )
 
 type parseError struct {
@@ -123,7 +123,7 @@ func (p *parser) parseIdentifier() (ident string, err error) {
 	ident = strings.TrimRight(buffer.String(), " \t")
 
 	if !p.idRegexp.MatchString(ident) {
-		msg := fmt.Sprintf("Bad section name: %s. Should match %s.",
+		msg := fmt.Sprintf("Bad key name: %s. Should match %s.",
 			ident, p.idRegexp.String())
 		err = parseError{p, msg}
 	}
@@ -226,6 +226,9 @@ func (p *parser) parseLine() (err error) {
 	case *sepToken:
 		return parseError{p, "Unexpected separator token."}
 	default:
+	}
+	if err != nil {
+		return err
 	}
 	p.skipSpaces()
 	if p.currentToken != nil && p.currentToken.getType() == commentTokType {
