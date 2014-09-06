@@ -60,11 +60,11 @@ var _ = Describe("Parser", func() {
 			Expect(pars.advance()).To(BeNil())
 		})
 
-		It("should fail on bad section name", func() {
+		It("should fail on bad key name", func() {
 			pars := newParser(strings.NewReader("[f$$$o]"))
 			_, err := pars.parseSection()
 			Expect(err).NotTo(BeNil())
-			Expect(err.Error()).To(ContainSubstring("Bad section name"))
+			Expect(err.Error()).To(ContainSubstring("Bad key name"))
 		})
 	})
 

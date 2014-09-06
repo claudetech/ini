@@ -16,14 +16,14 @@ type Decoder struct {
 type Options struct {
 	IdRegexp     string
 	SepChars     []byte
-	commentChars []byte
+	CommentChars []byte
 	LowCaseIds   bool
 }
 
 var defaultOptions Options = Options{
 	IdRegexp:     idDefaultRegex,
 	SepChars:     []byte{'='},
-	commentChars: []byte{';'},
+	CommentChars: []byte{';'},
 	LowCaseIds:   true,
 }
 
@@ -40,7 +40,7 @@ func (d *Decoder) SepChars(sepChars []byte) {
 }
 
 func (d *Decoder) CommentChars(commentChars []byte) {
-	d.options.commentChars = commentChars
+	d.options.CommentChars = commentChars
 }
 
 func (d *Decoder) LowCaseIds(lowCaseIds bool) {
@@ -54,7 +54,7 @@ func (d *Decoder) IdRegexp(idRegexp string) {
 func (d *Decoder) Decode(r interface{}) error {
 	pars := newParserWithOptions(d.rd,
 		d.options.IdRegexp, d.options.LowCaseIds,
-		d.options.SepChars, d.options.commentChars)
+		d.options.SepChars, d.options.CommentChars)
 	if err := pars.parseConfig(); err != nil {
 		return err
 	}
