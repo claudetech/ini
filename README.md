@@ -1,4 +1,4 @@
-# ini file for Go
+# ini file for Go [![Build Status][travis-img]][travis]
 
 This module is a ini file parser for Golang.
 It tries to have an API as close as possible to the
@@ -99,3 +99,7 @@ you could write the following.
 options := ini.Options{".*", []byte{'=', ':'}, []byte{';', '#'}, false}
 d := ini.NewDecoderWithOptions(file, options)
 ```
+
+
+[travis]: https://travis-ci.org/claudetech/ini
+[travis-img]: https://travis-ci.org/claudetech/ini.svg?branch=master
